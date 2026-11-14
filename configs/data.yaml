@@ -1,0 +1,23 @@
+classes: [drone, bird, aircraft]
+
+cenek:
+  root: data/raw/cenek
+  splits:
+    train: [dataset1, dataset3]
+    val: [dataset2]
+    test: [dataset4]
+  # two calibrations exist for these models; the authors' dataset-4 example uses the second.
+  calibration_variant: {sonyG: sonyG_2, mate10: mate10_2}
+
+halmstad:
+  root: data/raw/halmstad
+  fps: 30.0
+  stride: 3
+
+dut:
+  root: data/raw/dut
+
+fred:
+  root: data/raw/fred
+  # carved out of the published training split; FRED has no validation split.
+  val_sequences: ["52", "66", "94", "105"]

@@ -1,0 +1,40 @@
+device: auto
+
+motion:
+  work_width: 1920
+  history: 300
+  var_threshold: 25.0
+  diff_threshold: 12
+  min_area: 2
+  max_area: 2500
+  max_candidates: 4
+
+detector:
+  crop: 640
+  conf: 0.25
+  nms_iou: 0.5
+  max_motion_crops: 2
+  sweep_overlap: 64
+
+# p_detect, clutter_density, measurement_std and process_noise are estimated on the validation
+# flight by `dronetrack estimate`; the values below are only used before that has run
+tracker:
+  p_detect: 0.8
+  clutter_density: 1.0e-6
+  measurement_std: 3.0
+  process_noise: 2.0e5  # white-noise acceleration
+  p_survival: 0.99
+  q_birth: 0.2
+  gate_probability: 0.99
+  declare: 0.5
+  drop: 0.1
+  init_velocity_std: 300.0
+  size_smoothing: 0.3
+
+counter_tracker:
+  confirm_hits: 3
+  max_misses: 10
+
+bytetrack:
+  imgsz: 1920
+  conf: 0.1

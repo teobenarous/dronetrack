@@ -1,0 +1,42 @@
+methods:
+  motion-kf: {kind: motion-kf}
+  yolo-bytetrack: {kind: bytetrack, weights: yolo26s-mixed}
+  dronetrack: {kind: dronetrack, weights: yolo26s-mixed}
+  dronetrack-no-motion: {kind: dronetrack, weights: yolo26s-mixed, motion_crops: false}
+  dronetrack-counter: {kind: dronetrack, weights: yolo26s-mixed, tracker: counter}
+  dronetrack-cenek-weights: {kind: dronetrack, weights: yolo26s-cenek}
+
+test_sets:
+  cenek-test: {dataset: cenek, split: test}
+  cenek-test-subset: {dataset: cenek, split: test, sequences: [dataset4/cam1, dataset4/cam2, dataset4/cam6]}
+  fred-test: {dataset: fred, split: test}
+  halmstad-negatives: {dataset: halmstad, split: test, drone_free: true}
+
+perturbations:
+  clean: {}
+  downscale-2: {downscale: 2}
+  downscale-4: {downscale: 4}
+  downscale-8: {downscale: 8}
+  low-light: {gain: 0.25, gamma: 1.8, noise_std: 6.0}
+  noise: {noise_std: 12.0}
+  blur: {blur: 9}
+
+suites:
+  comparison:
+    methods: [motion-kf, yolo-bytetrack, dronetrack]
+    test_sets: [cenek-test, fred-test, halmstad-negatives]
+  ablation:
+    methods: [dronetrack-no-motion, dronetrack-counter, dronetrack-cenek-weights]
+    test_sets: [cenek-test, fred-test, halmstad-negatives]
+  robustness:
+    methods: [dronetrack]
+    test_sets: [cenek-test-subset]
+    perturbations: [clean, downscale-2, downscale-4, downscale-8, low-light, noise, blur]
+  realtime:
+    methods: [dronetrack]
+    test_sets: [cenek-test]
+    replay: true
+
+detection:
+  models: [yolo26s-cenek, yolo26s-mixed]
+  test_sets: [dut, halmstad]

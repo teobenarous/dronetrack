@@ -1,0 +1,42 @@
+tiles:
+  size: 640
+  cenek_frame_stride: 10
+  negative_fraction: 0.2
+  seed: 0
+
+defaults:
+  imgsz: 640
+  batch: 16
+  workers: 8
+  cache: false  # JPEG decoding keeps up with MPS training
+  patience: 10
+  close_mosaic: 5
+  seed: 0
+
+models:
+  yolo26s-cenek:
+    base: yolo26s.pt
+    classes: [drone]
+    epochs: 40
+    sources:
+      cenek: {cap: 12000}
+
+  yolo26s-mixed:
+    base: yolo26s.pt
+    classes: [drone, bird, aircraft]
+    epochs: 30
+    sources:
+      cenek: {cap: 12000}
+      halmstad: {cap: 6000}
+      dut: {cap: 5200}
+      fred: {cap_per_sequence: 100}
+
+  yolo26n-mixed:
+    base: yolo26n.pt
+    classes: [drone, bird, aircraft]
+    epochs: 30
+    sources:
+      cenek: {cap: 12000}
+      halmstad: {cap: 6000}
+      dut: {cap: 5200}
+      fred: {cap_per_sequence: 100}
