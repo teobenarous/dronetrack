@@ -2,7 +2,7 @@
 # Download the sky-facing subset of FRED (11 test + 44 train sequences): RGB frames and boxes only.
 # Test sequences keep every frame, train sequences every 10th. Finished sequences are skipped.
 #
-#   bash scripts/fetch_fred.sh [out_dir]      # default: data/raw/fred
+#   bash scripts/download_fred.sh [out_dir]   # default: data/raw/fred
 set -euo pipefail
 
 BASE=https://huggingface.co/datasets/GabrieleMagrini/FRED/resolve/main

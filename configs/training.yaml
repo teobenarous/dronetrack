@@ -8,7 +8,7 @@ defaults:
   imgsz: 640
   batch: 16
   workers: 8
-  cache: false  # JPEG decoding keeps up with MPS training
+  cache: disk  # Ultralytics trains with 0 loader workers on MPS, so images are pre-decoded to .npy
   patience: 10
   close_mosaic: 5
   seed: 0

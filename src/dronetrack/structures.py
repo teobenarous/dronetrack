@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import math
 from dataclasses import dataclass, field
 
 import numpy as np
@@ -32,21 +31,21 @@ class Detection:
 
 @dataclass(slots=True)
 class Estimate:
-    """Per-frame output: the record a downstream 3D filter would consume"""
+    """Per-frame output: the record a downstream 3D filter would consume."""
 
     frame: int
     t: float
     declared: bool
     presence: float
-    x: float = math.nan
-    y: float = math.nan
-    w: float = math.nan
-    h: float = math.nan
-    cov: tuple[float, float, float] = (math.nan, math.nan, math.nan)  # sxx, sxy, syy
-    azimuth: float = math.nan
-    elevation: float = math.nan
-    angle_cov: tuple[float, float, float] = (math.nan, math.nan, math.nan)
-    latency_ms: float = math.nan
+    x: float = np.nan
+    y: float = np.nan
+    w: float = np.nan
+    h: float = np.nan
+    cov: tuple[float, float, float] = (np.nan, np.nan, np.nan)  # sxx, sxy, syy
+    azimuth: float = np.nan
+    elevation: float = np.nan
+    angle_cov: tuple[float, float, float] = (np.nan, np.nan, np.nan)
+    latency_ms: float = np.nan
     timings: dict[str, float] = field(default_factory=dict)
 
     def record(self) -> dict:

@@ -53,7 +53,7 @@ class TrainDefaults(Model):
     imgsz: int = 640
     batch: int = 16
     workers: int = 8
-    cache: str | bool = False
+    cache: str | bool = "disk"
     patience: int = 10
     close_mosaic: int = 5
     seed: int = 0
@@ -180,7 +180,7 @@ class Config(Model):
     runs: Path = Path("runs")
     cache: Path = Path("data/cache")
     smoke: bool = False
-    # smoke runs cap every sequence and split so the whole chain finishes in minutes on a CPU
+    # Smoke runs cap every sequence and split so the whole chain finishes in minutes on a CPU.
     max_frames: int | None = None
     max_sequences: int | None = None
 
