@@ -1,34 +1,52 @@
 # dronetrack
 
-Real-time detection and tracking of a single drone from a ground camera. SPAICE technical challenge, work in progress.
+Real-time detection and tracking of a single drone from a fixed ground camera.
+2D detection and tracking, with each estimate also expressed as a direction (azimuth, elevation) in the camera frame, the input a multi-camera 3D filter would use.
 
 ## Setup
 
-- Python 3.13, [uv](https://docs.astral.sh/uv/)
-- `uv sync`
-
-## Data
-
-Not tracked by git. Expected layout:
+- Python 3.13, [uv](https://docs.astral.sh/uv/): `uv sync`
+- Data under `data/raw/` (not tracked):
 
 ```
 data/raw/
-├── cenek/      # Li et al. 2020, multi-view drone tracking (main dataset)
-├── halmstad/   # Svanström et al. 2021, visible clips (drone, bird, airplane, helicopter)
-├── dut/        # Zhao et al. 2022, DUT Anti-UAV detection set
-└── fred/       # Magrini et al. 2025, FRED (sky-facing subset)
+├── cenek/      # multi-view drone tracking datasets (main dataset)
+├── halmstad/   # drone, bird, airplane, helicopter clips (YOLO-format copy)
+├── dut/        # DUT Anti-UAV detection set
+└── fred/       # FRED, sky-facing subset
 ```
 
-- **cenek**: https://github.com/CenekAlbl/drone-tracking-datasets (clone, then `unpack.sh`)
-  - paper: https://doi.org/10.1109/IROS45743.2020.9341479 ([arXiv:2003.04784](https://arxiv.org/abs/2003.04784))
-- **halmstad**: https://github.com/DroneDetectionThesis/Drone-detection-dataset (`Data/Video_V`)
-  - paper: https://doi.org/10.1016/j.dib.2021.107521
-- **dut**: https://github.com/wangdongdut/DUT-Anti-UAV (detection set: train / val / test, Google Drive links)
-  - paper: [arXiv:2205.10851](https://arxiv.org/abs/2205.10851)
-- **fred**: https://huggingface.co/datasets/GabrieleMagrini/FRED, fetched with `bash scripts/fetch_fred.sh`
-  - paper: [arXiv:2506.05163](https://arxiv.org/abs/2506.05163), code: https://github.com/miccunifi/FRED
+- **cenek**: https://github.com/CenekAlbl/drone-tracking-datasets. Paper: [Li et al. 2020](https://arxiv.org/abs/2003.04784)
+- **halmstad**: original https://github.com/DroneDetectionThesis/Drone-detection-dataset;
+  YOLO-format copy on Kaggle. Paper: [Svanström et al. 2021](https://doi.org/10.1016/j.dib.2021.107521)
+- **dut**: https://github.com/wangdongdut/DUT-Anti-UAV (detection set). Paper: [Zhao et al. 2022](https://arxiv.org/abs/2205.10851)
+- **fred**: https://huggingface.co/datasets/GabrieleMagrini/FRED, subset via `bash scripts/download_fred.sh`.
+  Paper: [Magrini et al. 2025](https://arxiv.org/abs/2506.05163)
 
-## Scripts
+## Use
 
-- `scripts/fetch_fred.sh`: downloads the FRED subset (55 sequences, RGB frames and boxes)
-- `scripts/bench_train.py`: measures training and inference speed on Apple Silicon (MPS)
+```bash
+uv run dronetrack run video.mp4 --show              # track a file, JSON line per frame
+uv run dronetrack run 0 --show                      # live camera
+uv run dronetrack run video.mp4 --realtime          # replay at the recorded frame rate (drops frames if late)
+```
+
+## Experiments
+
+`scripts/run_experiments.sh` runs the stages below in order; each skips finished work and logs to
+`runs/logs/`. `--smoke` runs every stage on tiny subsets in a few minutes.
+
+| Stage     | Command                                                                     | Output                                                           |
+|-----------|-----------------------------------------------------------------------------|------------------------------------------------------------------|
+| data      | `dronetrack data`                                                           | counts and label overlays per split, `data/cache/audit/`         |
+| prepare   | `dronetrack prepare <model>`                                                | YOLO training set of native-resolution tiles, `data/cache/yolo/` |
+| train     | `dronetrack train <model>`, `dronetrack export <model>`                     | weights and ONNX, `runs/train/`                                  |
+| estimate  | `dronetrack estimate motion\|<model>`                                       | tracker parameters from the validation flight, `runs/estimate/`  |
+| evaluate  | `dronetrack evaluate comparison\|ablation\|robustness\|realtime\|detection` | per-frame outputs and metrics, `runs/<suite>/`                   |
+| benchmark | `dronetrack benchmark`                                                      | latency per frame, `runs/benchmark/`                             |
+
+Configuration lives in `configs/`. Standalone analyses: `scripts/error_budget.py`, `scripts/simulate_triangulation.py`, `scripts/benchmark_training.py`.
+
+## Tests
+
+`uv run pytest`
