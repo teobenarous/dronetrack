@@ -3,6 +3,12 @@
 Real-time detection and tracking of a single drone from a fixed ground camera.
 2D detection and tracking, with each estimate also expressed as a direction (azimuth, elevation) in the camera frame, the input a multi-camera 3D filter would use.
 
+![Tracking a drone on the held-out test flight](report/hero.png)
+
+*Camera 4 of the held-out test flight: the reported position over 8 s (lighter when older), and the reported box (blue) against the label (green) at 0, 4 and 8 s.*
+
+The write-up is in [`report/report.pdf`](report/report.pdf).
+
 ## Setup
 
 - Python 3.13, [uv](https://docs.astral.sh/uv/): `uv sync`
