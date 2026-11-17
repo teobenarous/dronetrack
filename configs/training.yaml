@@ -17,7 +17,7 @@ models:
   yolo26s-cenek:
     base: yolo26s.pt
     classes: [drone]
-    epochs: 40
+    epochs: 30
     sources:
       cenek: {cap: 12000}
 
