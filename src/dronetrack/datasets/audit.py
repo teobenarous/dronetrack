@@ -17,7 +17,7 @@ SPLITS = {
     "cenek": ("train", "val", "test"),
     "halmstad": ("train", "val", "test"),
     "dut": ("train", "val", "test"),
-    "fred": ("train", "val", "test")
+    "fred": ("train", "val", "test"),
 }
 
 

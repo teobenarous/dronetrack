@@ -42,7 +42,7 @@ class MotionDetector:
             x, y, w, h, area = stats[i]
             if not self.config.min_area <= area <= self.config.max_area:
                 continue
-            contrast = float(change[y : y + h, x : x + w].max()) / 255.
+            contrast = float(change[y : y + h, x : x + w].max()) / 255.0
             cx, cy = centroids[i]
             blobs.append(Detection(cx * scale, cy * scale, w * scale, h * scale, contrast, source="motion"))
         blobs.sort(key=lambda d: d.score, reverse=True)

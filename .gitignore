@@ -14,6 +14,9 @@ dist/
 /runs/
 *.pt
 *.onnx
+/report/*
+!/report/report.pdf
+scripts/benchmark_training.py
 
 # Editors and OS
 .idea/

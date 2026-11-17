@@ -1,7 +1,7 @@
 [project]
 name = "dronetrack"
 version = "0.1.0"
-description = "Real-time detection and tracking of a single drone from a ground camera (SPAICE technical challenge)"
+description = "Real-time detection and tracking of a single drone from a ground camera"
 readme = "README.md"
 authors = [
     { name = "teo", email = "96968228+teobenarous@users.noreply.github.com" }
